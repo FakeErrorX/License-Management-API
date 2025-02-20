@@ -13,12 +13,23 @@ redis
 motor
 pymongo
 aiocache
+cachetools
+redis-py-cluster
 
 # Monitoring and Telemetry
 prometheus-client
+prometheus-async
 opentelemetry-api
 opentelemetry-sdk
+opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-redis
+opentelemetry-instrumentation-sqlalchemy
+jaeger-client
+elastic-apm
 sentry-sdk
+statsd
+datadog
+newrelic
 
 # AI and ML
 numpy
@@ -26,14 +37,7 @@ scikit-learn
 tensorflow
 torch
 transformers
-
-# Voice and Speech
-SpeechRecognition
-pyttsx3
-
-# GraphQL
-strawberry-graphql
-graphql-core
+nltk
 
 # Authentication and Security
 PyJWT
@@ -41,184 +45,117 @@ cryptography
 pyotp
 qrcode
 oauthlib
+bcrypt
+pynacl
+hashids
 
 # HTTP and API
 aiohttp
 httpx
 requests
+websockets
+socketio
 
 # File Handling
 aiofiles
 pillow
+opencv-python
+imageio
+reportlab
+weasyprint
+pdfkit
 
 # Utilities
 python-dotenv
 python-dateutil
 python-slugify
 pycryptodome
+python-json-logger
+structlog
+babel
+pytz
+python-i18n
 
-# Message Queue
+# Message Queue and Tasks
 aiokafka
+kafka-python
 celery
-redis
+dramatiq
+arq
+confluent-kafka
+apache-beam
 
 # Container and Orchestration
 kubernetes
 docker
+python-consul
 
 # Development and Testing
 pytest
 pytest-asyncio
 pytest-cov
 pytest-mock
+pytest-xdist
+pytest-benchmark
+pytest-timeout
 black
 isort
 mypy
 flake8
 bandit
-
-# Geographic
-geopy
-
-# API Documentation
-fastapi-pagination
-fastapi-cache2
-fastapi-utils
-fastapi-versioning
-
-# Advanced Security
-fastapi-security
-python-keycloak
-authlib
-itsdangerous
-bcrypt
-
-# Testing and Quality
-pytest-xdist
 coverage
 locust
 faker
 
-# Observability
-opentelemetry-instrumentation-fastapi
-opentelemetry-instrumentation-redis
-opentelemetry-instrumentation-sqlalchemy
-jaeger-client
-elastic-apm
+# API Features
+fastapi-pagination
+fastapi-cache2
+fastapi-utils
+fastapi-versioning
+fastapi-security
+fastapi-websocket-pubsub
+python-keycloak
+authlib
+itsdangerous
 
-# Service Mesh
-python-consul
-
-# Event Streaming
-confluent-kafka
-apache-beam
-kafka-python
-
-# Feature Management
-unleash-client
-launchdarkly-server-sdk
-
-# Backup and Recovery
-boto3
-google-cloud-storage
-azure-storage-blob
-
-# Schema Management
-alembic
+# Data Validation and Schema
 marshmallow
+marshmallow-dataclass
+cerberus
+jsonschema
+email-validator
+pydantic-extra-types
+validators
 pydantic[email]
 
-# Rate Limiting and Throttling
+# Rate Limiting
 fastapi-limiter
 limits
 ratelimit
-
-# Validation and Sanitization
-email-validator
-pydantic-extra-types
-python-multipart
-validators
-
-# Async Tools
-asyncio-extras
-aiostream
 asyncio-throttle
-
-# Metrics and Monitoring
-statsd
-datadog
-newrelic
-prometheus-async
-
-# Caching
-cachetools
-aiocache
-redis-py-cluster
-
-# Error Handling
-sentry-sdk
-python-json-logger
-structlog
-
-# Websockets
-websockets
-fastapi-websocket-pubsub
-socketio
-
-# Background Tasks
-celery
-dramatiq
-arq
 
 # API Client Generation
 openapi-generator
 swagger-codegen
 genson
 
-# Health Checks
-python-health-check
-diagnostics
-
-# Internationalization
-babel
-pytz
-python-i18n
-
-# Encryption and Hashing
-cryptography
-pynacl
-hashids
-
-# Data Validation
-cerberus
-jsonschema
-marshmallow-dataclass
-
-# PDF Generation
-reportlab
-weasyprint
-pdfkit
-
-# Image Processing
-Pillow
-opencv-python
-imageio
-
-# Machine Learning
-scikit-learn
-tensorflow
-torch
-transformers
-nltk
-
 # Database Migrations
 alembic
 yoyo-migrations
 sqlalchemy-migrate
 
-# Testing Tools
-pytest-benchmark
-pytest-asyncio
-pytest-cov
-pytest-mock
-pytest-timeout
+# Geographic
+geopy
+
+# Feature Management
+unleash-client
+launchdarkly-server-sdk
+
+# Cloud Storage
+boto3
+google-cloud-storage
+azure-storage-blob
+
+# Health Checks
+python-health-check
+diagnostics

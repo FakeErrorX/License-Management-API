@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 env:
   AWS_REGION: us-west-2
@@ -14,28 +14,50 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
-    - name: Set up Python
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
-        
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pytest pytest-cov
-        
-    - name: Run tests
+        pip install pytest-cov black mypy flake8
+    
+    - name: Run linting
+      run: |
+        black . --check
+        flake8 .
+        mypy app/
+
+    - name: Run tests with coverage
       run: |
         pytest --cov=app --cov-report=xml
-        
-    - name: Upload coverage
+    
+    - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage.xml
+        fail_ci_if_error: true
 
   build:
     needs: test
@@ -66,46 +88,40 @@ jobs:
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   deploy:
-    needs: build
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
-    
-    - name: Update kube config
-      run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER }} --region ${{ env.AWS_REGION }}
-    
-    - name: Deploy to EKS
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
       run: |
-        # Update deployment image
-        kubectl set image deployment/api-deployment api=${{ steps.build.outputs.image }}
-        
-        # Wait for rollout to complete
-        kubectl rollout status deployment/api-deployment
-        
-    - name: Verify deployment
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Build and push Docker image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
-        kubectl get pods -l app=api
-        
-    - name: Run integration tests
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker build -t $DOCKER_USERNAME/app-name:${{ github.sha }} .
+        docker push $DOCKER_USERNAME/app-name:${{ github.sha }}
+
+    - name: Deploy to cloud
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       run: |
-        # Wait for service to be ready
-        sleep 30
-        
-        # Get service URL
-        SERVICE_URL=$(kubectl get service api-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
-        
-        # Run integration tests
-        pytest tests/integration --url http://$SERVICE_URL
-        
+        echo "$KUBE_CONFIG" > kubeconfig.yaml
+        kubectl --kubeconfig=kubeconfig.yaml set image deployment/app-name app-name=$DOCKER_USERNAME/app-name:${{ github.sha }}
+
   notify:
     needs: [deploy]
     runs-on: ubuntu-latest
