@@ -1,31 +1,31 @@
 # Core dependencies
-fastapi==0.109.0
-uvicorn==0.27.0
-pydantic==2.6.0
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-python-multipart==0.0.7
+fastapi
+uvicorn
+pydantic
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
 
 # Database and Cache
-sqlalchemy==2.0.25
-asyncpg==0.29.0
-redis==5.0.1
-motor==3.3.2
-pymongo==4.6.1
-aiocache==0.12.2
+sqlalchemy
+asyncpg
+redis
+motor
+pymongo
+aiocache
 
 # Monitoring and Telemetry
-prometheus-client==0.19.0
-opentelemetry-api==1.22.0
-opentelemetry-sdk==1.22.0
-sentry-sdk==1.39.1
+prometheus-client
+opentelemetry-api
+opentelemetry-sdk
+sentry-sdk
 
 # AI and ML
-numpy==1.26.3
-scikit-learn==1.4.0
-tensorflow==2.15.0
-torch==2.2.0
-transformers==4.36.2
+numpy
+scikit-learn
+tensorflow
+torch
+transformers
 
 # Voice and Speech
 SpeechRecognition
@@ -36,61 +36,68 @@ strawberry-graphql
 graphql-core
 
 # Authentication and Security
-PyJWT==2.8.0
-cryptography==41.0.7
-pyotp==2.9.0
-qrcode==7.4.2
-oauthlib==3.2.2
+PyJWT
+cryptography
+pyotp
+qrcode
+oauthlib
 
 # HTTP and API
-aiohttp==3.9.1
-httpx==0.26.0
-requests==2.31.0
+aiohttp
+httpx
+requests
 
 # File Handling
-aiofiles==23.2.1
-pillow==10.2.0
+aiofiles
+pillow
 
 # Utilities
-python-dotenv==1.0.0
-python-dateutil==2.8.2
-python-slugify==8.0.1
-pycryptodome==3.19.1
+python-dotenv
+python-dateutil
+python-slugify
+pycryptodome
 
 # Message Queue
-aiokafka==0.8.1
+aiokafka
+celery
+redis
 
 # Container and Orchestration
 kubernetes
-docker==7.0.0
+docker
 
 # Development and Testing
-pytest==7.4.4
-pytest-asyncio==0.23.3
-pytest-cov==4.1.0
-pytest-mock==3.12.0
-black==24.1.0
-isort==5.13.2
-mypy==1.8.0
+pytest
+pytest-asyncio
+pytest-cov
+pytest-mock
+black
+isort
+mypy
+flake8
+bandit
 
 # Geographic
 geopy
 
 # API Documentation
-fastapi-pagination==0.12.12
-fastapi-cache2==0.2.1
-fastapi-utils==0.2.1
+fastapi-pagination
+fastapi-cache2
+fastapi-utils
+fastapi-versioning
 
 # Advanced Security
 fastapi-security
 python-keycloak
 authlib
 itsdangerous
+bcrypt
 
 # Testing and Quality
 pytest-xdist
 coverage
 locust
+faker
 
 # Observability
 opentelemetry-instrumentation-fastapi
@@ -105,40 +112,113 @@ python-consul
 # Event Streaming
 confluent-kafka
 apache-beam
+kafka-python
 
 # Feature Management
 unleash-client
 launchdarkly-server-sdk
 
-# API Gateway
-python-kong
-
-# Load Balancing
-aiohttp
-requests
-
 # Backup and Recovery
-boto3==1.34.14
-google-cloud-storage==2.14.0
-azure-storage-blob==12.19.0
+boto3
+google-cloud-storage
+azure-storage-blob
 
 # Schema Management
-alembic==1.13.1
-marshmallow==3.20.1
+alembic
+marshmallow
+pydantic[email]
 
 # Rate Limiting and Throttling
-fastapi-limiter==0.1.5
-limits==3.7.0
+fastapi-limiter
+limits
+ratelimit
 
 # Validation and Sanitization
-email-validator==2.1.0.post1
-pydantic-extra-types==2.5.0
+email-validator
+pydantic-extra-types
+python-multipart
+validators
 
 # Async Tools
 asyncio-extras
 aiostream
+asyncio-throttle
 
 # Metrics and Monitoring
-statsd==4.0.1
-datadog==0.48.0
+statsd
+datadog
 newrelic
+prometheus-async
+
+# Caching
+cachetools
+aiocache
+redis-py-cluster
+
+# Error Handling
+sentry-sdk
+python-json-logger
+structlog
+
+# Websockets
+websockets
+fastapi-websocket-pubsub
+socketio
+
+# Background Tasks
+celery
+dramatiq
+arq
+
+# API Client Generation
+openapi-generator
+swagger-codegen
+genson
+
+# Health Checks
+python-health-check
+diagnostics
+
+# Internationalization
+babel
+pytz
+python-i18n
+
+# Encryption and Hashing
+cryptography
+pynacl
+hashids
+
+# Data Validation
+cerberus
+jsonschema
+marshmallow-dataclass
+
+# PDF Generation
+reportlab
+weasyprint
+pdfkit
+
+# Image Processing
+Pillow
+opencv-python
+imageio
+
+# Machine Learning
+scikit-learn
+tensorflow
+torch
+transformers
+nltk
+
+# Database Migrations
+alembic
+yoyo-migrations
+sqlalchemy-migrate
+
+# Testing Tools
+pytest-benchmark
+pytest-asyncio
+pytest-cov
+pytest-mock
+pytest-timeout
