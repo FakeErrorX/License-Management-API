@@ -43,6 +43,11 @@ jobs:
         pip install -r requirements.txt
         pip install pytest-cov black mypy flake8
     
+    - name: Format code
+      run: |
+        black .
+        isort .
+    
     - name: Run linting
       run: |
         black . --check
@@ -65,7 +70,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
