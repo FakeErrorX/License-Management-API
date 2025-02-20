@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, 3.10, 3.11]
+        python-version: [3.13, 3.12, 3.11]
 
     services:
       redis:
@@ -85,54 +85,36 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   deploy:
-    needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        python-version: '3.11'
-        cache: 'pip'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Build and push Docker image
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker build -t $DOCKER_USERNAME/app-name:${{ github.sha }} .
-        docker push $DOCKER_USERNAME/app-name:${{ github.sha }}
-
-    - name: Deploy to cloud
-      env:
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      run: |
-        echo "$KUBE_CONFIG" > kubeconfig.yaml
-        kubectl --kubeconfig=kubeconfig.yaml set image deployment/app-name app-name=$DOCKER_USERNAME/app-name:${{ github.sha }}
-
-  notify:
-    needs: [deploy]
-    runs-on: ubuntu-latest
-    if: always()
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
     
-    steps:
-    - name: Notify Slack
-      uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        fields: repo,message,commit,author,action,eventName,ref,workflow
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      if: always()
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER }} --region ${{ env.AWS_REGION }}
+    
+    - name: Deploy to EKS
+      run: |
+        kubectl set image deployment/api-deployment api=${{ needs.build.outputs.image }}
+        kubectl rollout status deployment/api-deployment
+
+    - name: Verify deployment
+      run: |
+        kubectl get pods -l app=api
+        
+    - name: Health check
+      run: |
+        ENDPOINT=$(kubectl get service api-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
+        curl -f http://$ENDPOINT/health || exit 1

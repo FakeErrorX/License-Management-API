@@ -135,8 +135,8 @@ ratelimit
 asyncio-throttle
 
 # API Client Generation
-openapi-generator
-swagger-codegen
+openapi-generator-cli
+swagger-codegen-cli
 genson
 
 # Database Migrations
@@ -157,5 +157,5 @@ google-cloud-storage
 azure-storage-blob
 
 # Health Checks
-python-health-check
-diagnostics
+healthcheck
+py-healthcheck
