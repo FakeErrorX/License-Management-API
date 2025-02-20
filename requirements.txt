@@ -39,10 +39,12 @@ graphql-core
 
 # Authentication and Security
 oauthlib
-python-jwt
+PyJWT
 cryptography
 pyotp
 qrcode
+python-jose
+flask-jwt-extended
 
 # HTTP and API
 aiohttp
@@ -84,7 +86,6 @@ fastapi-cache2
 fastapi-utils
 
 # Advanced Security
-jwt-extended
 fastapi-security
 python-keycloak
 authlib
@@ -105,41 +106,34 @@ jaeger-client
 elastic-apm
 
 # Service Mesh
-istio-api
-consul
-envoy-api
+python-consul
 
 # Event Streaming
 confluent-kafka
-apache-flink
 apache-beam
 
 # Feature Management
-feature-flags
 unleash-client
 launchdarkly-server-sdk
 
 # API Gateway
-fastapi-gateway
-kong-client
-tyk-client
+python-kong
+tyk-python
 
 # Load Balancing
-traefik-client
-haproxy-api
+python-traefik
+python-haproxy
 
 # Backup and Recovery
-python-backup
-cloud-backup-client
+python-cloudbackup
 
 # Schema Management
 alembic
-pydantic-sqlalchemy
+pydantic[sqlalchemy]
 marshmallow
 
 # Rate Limiting and Throttling
 fastapi-limiter
-redis-throttle
 
 # Validation and Sanitization
 email-validator
