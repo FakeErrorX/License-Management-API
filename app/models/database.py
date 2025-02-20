@@ -333,3 +333,26 @@ class FeatureFlag(BaseModel):
     rules: Dict
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class QueryPattern(BaseModel):
+    query_hash: str
+    frequency: int
+    avg_execution_time: float
+    table_access_patterns: Dict[str, List[str]]
+    analyzed_at: datetime
+
+class IndexSuggestion(BaseModel):
+    table_name: str
+    columns: List[str]
+    index_type: str
+    estimated_impact: float
+    created_at: datetime
+
+class OptimizationPlan(BaseModel):
+    id: str
+    suggestions: List[IndexSuggestion]
+    estimated_improvement: float
+    risk_level: str
+    applied: bool = False
+    created_at: datetime
+    applied_at: Optional[datetime] = None

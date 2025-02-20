@@ -5,6 +5,7 @@ from fastapi.openapi.docs import get_swagger_ui_html
 from motor.motor_asyncio import AsyncIOMotorClient
 import sentry_sdk
 from prometheus_client import make_asgi_app
+import asyncio
 
 from app.core.config import settings
 from app.core.security import setup_security
@@ -16,6 +17,8 @@ from app.core.middleware import (
     EncryptionMiddleware
 )
 from app.monitoring.metrics import api_version
+from app.core.feature_implementation import initialize_missing_features
+from app.core.monitoring import feature_monitor
 
 # Initialize Sentry
 if settings.SENTRY_DSN:
@@ -60,6 +63,12 @@ api_version.info({
 
 @app.on_event("startup")
 async def startup_event():
+    # Initialize missing features
+    initialize_missing_features()
+    
+    # Start feature monitoring
+    asyncio.create_task(feature_monitor.monitor_features())
+    
     # Initialize MongoDB connection
     app.mongodb_client = AsyncIOMotorClient(settings.MONGODB_URL)
     app.mongodb = app.mongodb_client[settings.MONGODB_DATABASE]
