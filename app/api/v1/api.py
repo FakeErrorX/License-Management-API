@@ -13,7 +13,10 @@ from app.api.v1.endpoints import (
     security,
     caching,
     testing,
-    voice
+    voice,
+    suggestions,
+    logs,
+    learning
 )
 from app.api.graphql.endpoint import router as graphql_router
 from app.api.websocket.endpoints import router as websocket_router
@@ -45,6 +48,9 @@ api_router.include_router(security.router, prefix="/security", tags=["Security"]
 api_router.include_router(caching.router, prefix="/cache", tags=["Caching"])
 api_router.include_router(testing.router, prefix="/testing", tags=["Testing"])
 api_router.include_router(voice.router, prefix="/voice", tags=["Voice"])
+api_router.include_router(suggestions.router, prefix="/suggestions", tags=["Suggestions"])
+api_router.include_router(logs.router, prefix="/logs", tags=["Log Insights"])
+api_router.include_router(learning.router, prefix="/learning", tags=["Continuous Learning"])
 
 # GraphQL endpoint
 api_router.include_router(graphql_router, prefix="/graphql", tags=["GraphQL"])
