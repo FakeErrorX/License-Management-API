@@ -34,7 +34,6 @@ newrelic
 # AI and ML
 numpy
 scikit-learn
-tensorflow
 torch
 transformers
 nltk
@@ -59,7 +58,7 @@ python-socketio
 # File Handling
 aiofiles
 pillow
-opencv-python
+opencv-python-headless
 imageio
 reportlab
 weasyprint
