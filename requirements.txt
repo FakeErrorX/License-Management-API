@@ -54,7 +54,7 @@ aiohttp
 httpx
 requests
 websockets
-socketio
+python-socketio
 
 # File Handling
 aiofiles
@@ -113,7 +113,7 @@ fastapi-cache2
 fastapi-utils
 fastapi-versioning
 fastapi-security
-fastapi-websocket-pubsub
+fastapi-websocket-rpc
 python-keycloak
 authlib
 itsdangerous
@@ -135,8 +135,8 @@ ratelimit
 asyncio-throttle
 
 # API Client Generation
-openapi-generator-cli
-swagger-codegen-cli
+openapi-python-client
+swagger-py-codegen
 genson
 
 # Database Migrations
@@ -157,5 +157,5 @@ google-cloud-storage
 azure-storage-blob
 
 # Health Checks
-healthcheck
 py-healthcheck
+fastapi-health
