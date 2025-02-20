@@ -118,14 +118,15 @@ launchdarkly-server-sdk
 
 # API Gateway
 python-kong
-tyk-python
 
 # Load Balancing
-python-traefik
-python-haproxy
+aiohttp
+requests
 
 # Backup and Recovery
-python-cloudbackup
+boto3
+google-cloud-storage
+azure-storage-blob
 
 # Schema Management
 alembic
@@ -134,6 +135,7 @@ marshmallow
 
 # Rate Limiting and Throttling
 fastapi-limiter
+limits
 
 # Validation and Sanitization
 email-validator
@@ -143,3 +145,8 @@ python-multipart
 # Async Tools
 asyncio-extras
 aiostream
+
+# Metrics and Monitoring
+statsd
+datadog
+newrelic
